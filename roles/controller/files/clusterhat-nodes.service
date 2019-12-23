@@ -1,0 +1,11 @@
+[Unit]
+Description=Start and stop cluster nodes on boot and shutdown
+
+[Service]
+Type=oneshot
+ExecStart=/sbin/clusterhat-start-nodes
+ExecStop=/sbin/clusterhat off
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

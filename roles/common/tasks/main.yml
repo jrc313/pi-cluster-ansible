@@ -1,0 +1,29 @@
+---
+
+- name: Set default password
+  become: yes
+  user:
+    name: "{{ pi_username }}"
+    password: "{{ password }}"
+  no_log: yes
+
+- name: Disable SSH password login
+  become: yes
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: ^#?PasswordAuthentication
+    line: PasswordAuthentication no
+
+- name: Copy bash aliases
+  copy:
+    src: .bash_aliases
+    dest: ~/.bash_aliases
+    owner: "{{ pi_username }}"
+    group: "{{ pi_username }}"
+    mode: '0644'
+
+- name: Upgrade packages
+  become: yes
+  apt:
+    update-cache: yes
+    upgrade: full

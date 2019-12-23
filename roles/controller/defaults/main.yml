@@ -1,0 +1,7 @@
+---
+hostname: pihost
+private_key: |
+  -----BEGIN CERTIFICATE-----
+  NO PRIVATE KEY
+  -----END CERTIFICATE-----
+public_key: ssh-rsa XXX foo@example.com

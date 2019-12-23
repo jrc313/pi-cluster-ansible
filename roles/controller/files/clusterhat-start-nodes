@@ -1,0 +1,9 @@
+#!/bin/bash
+
+/sbin/clusterctrl on p1
+sleep 2
+/sbin/clusterctrl on p2
+sleep 2
+/sbin/clusterctrl on p3
+sleep 2
+/sbin/clusterctrl on p4
