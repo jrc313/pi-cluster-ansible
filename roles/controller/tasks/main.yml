@@ -60,6 +60,7 @@
   systemd:
     name: clusterhat-nodes
     state: started
+    enabled: yes
     daemon_reload: yes
 
 - name: Install packages
