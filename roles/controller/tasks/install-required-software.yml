@@ -1,0 +1,16 @@
+---
+- name: Install packages
+  become: yes
+  apt:
+    name: "{{ apt_packages }}"
+    state: present
+
+- name: Upgrade packages
+  become: yes
+  apt:
+    upgrade: full
+
+- name: Install
+  become: true
+  pip:
+    name: "{{ pip_packages }}"

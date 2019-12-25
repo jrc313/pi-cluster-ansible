@@ -1,0 +1,7 @@
+---
+
+- name: Set cmdline properties
+  become: yes
+  copy:
+    src: cmdline.txt
+    dest: /boot/cmdline.txt

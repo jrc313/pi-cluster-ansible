@@ -1,0 +1,34 @@
+---
+
+- name: Install private SSH key
+  copy:
+    content: '{{ private_key }}'
+    dest: "{{ '/home/' + pi_username + '/.ssh/id_rsa' }}"
+    owner: "{{ pi_username }}"
+    group: "{{ pi_username }}"
+    mode: 0600
+  no_log: yes
+ 
+- name: Install public SSH key
+  copy:
+    content: '{{ public_key }}'
+    dest: "{{ '/home/' + pi_username + '/.ssh/id_rsa.pub' }}"
+    owner: "{{ pi_username }}"
+    group: "{{ pi_username }}"
+    mode: 0644
+  no_log: yes
+
+- name: Add keychain to .bashrc
+  lineinfile:
+    create: yes
+    path: "{{ '/home/' + pi_username + '/.bashrc' }}"
+    line: eval `keychain --eval --agents ssh id_rsa`
+
+- name: Add SSH key to nodes
+  expect:
+    command: "ssh-copy-id {{ item }}"
+    responses:
+      (?i)password: "{{ default_password }}"
+      (?i)passphrase: "{{ ssh_key_passphrase }}"
+      (?i)yes\/no: "yes"
+  with_items: "{{ groups['nodes'] }}"

@@ -4,4 +4,4 @@ controller
 cbridge
 
 [nodes]
-p[1:3].local
+p[1:4].local
