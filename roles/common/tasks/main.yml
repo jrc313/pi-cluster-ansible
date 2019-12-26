@@ -1,11 +1,27 @@
 ---
 
+- name: Check if password needs to be changed
+  become: true
+  script:
+    cmd: "test-password.sh {{ pi_user_username }} {{ pi_user_password }}"
+  register: password_test
+  changed_when: '"no match" in password_test.stdout'
+  no_log: yes
+
+- name: Generate password hash
+  shell:
+    cmd: "openssl passwd -1 {{ pi_user_password }}"
+  register: password_hash
+  no_log: yes
+  when: password_test is changed
+
 - name: Set default password
   become: yes
   user:
-    name: "{{ pi_username }}"
-    password: "{{ password }}"
+    name: "{{ pi_user_username }}"
+    password: "{{ password_hash.stdout }}"
   no_log: yes
+  when: password_test is changed
 
 - name: Disable SSH password login
   become: yes
@@ -18,8 +34,8 @@
   copy:
     src: .bash_aliases
     dest: ~/.bash_aliases
-    owner: "{{ pi_username }}"
-    group: "{{ pi_username }}"
+    owner: "{{ pi_user_username }}"
+    group: "{{ pi_user_username }}"
     mode: '0644'
 
 - name: Upgrade packages
