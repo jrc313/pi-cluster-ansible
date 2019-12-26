@@ -1,7 +1,6 @@
 [controllers]
 pihost
-controller
-cbridge
+cnat
 
 [nodes]
 p[1:4].local

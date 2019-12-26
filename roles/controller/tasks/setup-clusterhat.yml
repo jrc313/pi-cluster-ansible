@@ -25,3 +25,9 @@
     state: started
     enabled: yes
     daemon_reload: yes
+
+- name: Wait for nodes to start
+  wait_for:
+    host: "{{ item }}"
+    port: 22
+  with_items: "{{ groups['nodes'] }}"

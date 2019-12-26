@@ -1,5 +1,37 @@
 ---
 
+- name: Check if ssh host keys have been reset
+  stat: 
+    path: /etc/ssh/ssh_host_keys_reset
+  register: ssh_host_keys_reset
+
+- name: Set host keys on first run
+  block:
+    - name: Find host keys
+      find:
+        paths: /etc/ssh/ssh
+        patterns: "ssh_host*"
+      register: ssh_host_keys
+
+    - name: Clear host keys
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items: "{{ ssh_host_keys['files'] }}"
+
+    - name: Generate host keys
+      shell:
+        cmd: ssh-keygen -A
+
+    - name: Flag that host keys have been reset
+      file:
+        path: /etc/ssh/ssh_host_keys_reset
+        state: touch
+        mode: 0644
+
+  when: ssh_host_keys_reset.stat.exists == false
+  become: true
+
 - name: Check if password needs to be changed
   become: true
   script:

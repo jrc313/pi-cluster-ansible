@@ -1,0 +1,16 @@
+---
+
+- name: "Test if {{ host }} has SSH key"
+  script:
+    cmd: "test-ssh-key-login.sh {{ host }} /home/{{ pi_user_username }}/.ssh/id_rsa"
+  register: ssh_login_test
+  changed_when: '"no" in ssh_login_test.stdout'
+
+- name: "Add SSH key to node {{ host }}"
+  expect:
+    command: "ssh-copy-id {{ host }}"
+    responses:
+        (?i)password: "{{ default_password }}"
+        (?i)passphrase: "{{ ssh_key_passphrase }}"
+        (?i)yes\/no: "yes"
+  when: ssh_login_test is changed
