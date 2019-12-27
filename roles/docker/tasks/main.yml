@@ -1,0 +1,5 @@
+---
+
+- import_tasks: install-docker-packages.yml
+- import_tasks: configure-swarm.yml
+

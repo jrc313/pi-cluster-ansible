@@ -1,0 +1,6 @@
+---
+apt_packages:
+  - docker-ce
+
+pip_packages:
+  - { name: docker, version: 2.4.0 }

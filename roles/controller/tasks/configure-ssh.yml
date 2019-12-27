@@ -8,7 +8,7 @@
 - name: Add keychain to .bashrc
   lineinfile:
     create: yes
-    path: "{{ '/home/' + pi_username + '/.bashrc' }}"
+    path: "{{ '/home/' + pi_user_username + '/.bashrc' }}"
     line: eval `keychain --eval --agents ssh id_rsa`
 
 - name: Add SSH key to nodes

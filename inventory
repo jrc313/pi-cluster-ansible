@@ -3,3 +3,13 @@ pihost
 
 [nodes]
 p[1:4].local
+
+[docker_nodes]
+pihost
+p[1:4].local
+
+[docker_manager]
+pihost
+
+[docker_worker]
+p[1:4].local

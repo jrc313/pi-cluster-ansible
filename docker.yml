@@ -1,0 +1,8 @@
+---
+- hosts: docker_nodes
+  roles:
+    - docker
+  vars_files:
+    - vars/secrets.yml
+  environment:
+    PYTHONPATH: "{{ lookup('env','PYTHONPATH') }}:/usr/local/lib/python2.7/dist-packages:/usr/local/lib/python2.7/site-packages"

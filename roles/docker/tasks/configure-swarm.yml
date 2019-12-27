@@ -1,0 +1,46 @@
+---
+
+- name: Determine if swarm is active
+  shell:
+    cmd: docker info 2>/dev/null | grep Swarm
+  register: swarm_status
+  changed_when: false
+
+- name: Configure swarm manager
+  block:
+
+    - name: Initialise swarm on host
+      shell:
+        cmd: docker swarm init
+      register: swarm
+      when: "'active' not in swarm_status.stdout"
+
+    - name: Get swarm worker token
+      shell:
+        cmd: docker swarm join-token -q worker
+      register: swarm_token
+      changed_when: false
+
+    - name: Get manager address
+      shell:
+        cmd: docker info 2>/dev/null | sed -E -n '/.*Manager Addresses.*/{n;s/[^0-9]*([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\:[0-9]+)/\1/p}'
+      register: manager_address
+      changed_when: false
+
+    - name: Register token in dummy host
+      add_host:
+        name:   "SWARM_TOKEN_HOLDER"
+        token:  "{{ swarm_token.stdout }}"
+        manager_address: "{{ manager_address.stdout }}"
+      changed_when: false
+
+  when: "'docker_manager' in group_names"
+  become: true
+
+- name: Add nodes to swarm
+  become: true
+  shell:
+    cmd: "docker swarm join --token {{ hostvars['SWARM_TOKEN_HOLDER']['token'] }} {{ hostvars['SWARM_TOKEN_HOLDER']['manager_address'] }}"
+  when:
+    - "'docker_worker' in group_names"
+    - "'active' not in swarm_status.stdout"
