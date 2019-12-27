@@ -11,6 +11,21 @@
     command: "ssh-copy-id {{ host }}"
     responses:
         (?i)password: "{{ default_password }}"
-        (?i)passphrase: "{{ ssh_key_passphrase }}"
-        (?i)yes\/no: "yes"
+        (?i).*yes\/no: "yes"
   when: ssh_login_test is changed
+
+- name: "Test if {{ host }} has Ansible server key"
+  local_action: script
+  args:
+    cmd: "test-ssh-key-login.sh {{ host }} ~/.ssh/id_rsa"
+  register: ansible_server_ssh_login_test
+  changed_when: '"no" in ansible_server_ssh_login_test.stdout'
+
+- name: "Add Ansible server SSH key to node {{ host }}"
+  local_action: expect
+  args:
+    command: "ssh-copy-id {{ host }}"
+    responses:
+        (?i)password: "{{ default_password }}"
+        (?i).*yes\/no: "yes"
+  when: ansible_server_ssh_login_test is changed

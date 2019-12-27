@@ -1,0 +1,9 @@
+---
+
+- name: Copy bash aliases
+  copy:
+    src: .bash_aliases
+    dest: ~/.bash_aliases
+    owner: "{{ pi_user_username }}"
+    group: "{{ pi_user_username }}"
+    mode: '0644'

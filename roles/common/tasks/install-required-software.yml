@@ -1,4 +1,5 @@
 ---
+
 - name: Install packages
   become: yes
   apt:
@@ -9,3 +10,9 @@
   become: true
   pip:
     name: "{{ pip_packages }}"
+
+- name: Upgrade packages
+  become: yes
+  apt:
+    update-cache: yes
+    upgrade: full
