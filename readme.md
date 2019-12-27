@@ -9,3 +9,4 @@ This playbook configures a ClusterHAT based cluster.
 - Creates an SSH key on the host and pushes it to each of the nodes
 - Pushes the Ansible server ssh key to the nodes to allow Ansible to connect to the nodes
 - Creates a service on the host to start the nodes on boot
+- Install Docker and setup a swarm
