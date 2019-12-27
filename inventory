@@ -1,6 +1,5 @@
 [controllers]
 pihost
-cnat
 
 [nodes]
 p[1:4].local
