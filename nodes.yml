@@ -4,3 +4,4 @@
     - common
   vars_files:
     - vars/secrets.yml
+  strategy: free

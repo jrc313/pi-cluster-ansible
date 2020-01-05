@@ -5,6 +5,7 @@
     cmd: docker info 2>/dev/null | grep Swarm
   register: swarm_status
   changed_when: false
+  become: true
 
 - name: Configure swarm manager
   block:
@@ -13,7 +14,7 @@
       shell:
         cmd: docker swarm init
       register: swarm
-      when: "'active' not in swarm_status.stdout"
+      when: "'inactive' in swarm_status.stdout"
 
     - name: Get swarm worker token
       shell:
@@ -43,4 +44,4 @@
     cmd: "docker swarm join --token {{ hostvars['SWARM_TOKEN_HOLDER']['token'] }} {{ hostvars['SWARM_TOKEN_HOLDER']['manager_address'] }}"
   when:
     - "'docker_worker' in group_names"
-    - "'active' not in swarm_status.stdout"
+    - "'inactive' in swarm_status.stdout"

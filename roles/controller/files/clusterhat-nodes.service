@@ -3,7 +3,7 @@ Description=Start and stop cluster nodes on boot and shutdown
 
 [Service]
 Type=oneshot
-ExecStart=/sbin/clusterhat-start-nodes
+ExecStart=/sbin/clusterhat on
 ExecStop=/sbin/clusterhat off
 RemainAfterExit=yes
 

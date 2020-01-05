@@ -1,0 +1,15 @@
+---
+
+- name: Update iptables to allow traffic to nodes
+  copy:
+    src: iptables-rules.v4
+    dest: /etc/iptables/rules.v4
+  become: true
+  register: iptables_update
+
+- name: Restart network to bring iptables rules into effect
+  service:
+    name: networking
+    state: restarted
+  when: iptables_update is changed
+  become: true

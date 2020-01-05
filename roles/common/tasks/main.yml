@@ -1,5 +1,6 @@
 ---
 
+- import_tasks: configure-boot.yml
 - import_tasks: configure-ssh.yml
 - import_tasks: set-default-password.yml
 - import_tasks: configure-bash.yml

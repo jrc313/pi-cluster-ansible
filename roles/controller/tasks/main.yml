@@ -1,5 +1,5 @@
 ---
 
+- import_tasks: configure-iptables.yml
 - import_tasks: setup-clusterhat.yml
 - import_tasks: configure-ssh.yml
-- import_tasks: configure-boot.yml
