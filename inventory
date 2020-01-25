@@ -13,3 +13,6 @@ pihost
 
 [docker_worker]
 p[1:4].local
+
+[pizero]
+raspberrypi

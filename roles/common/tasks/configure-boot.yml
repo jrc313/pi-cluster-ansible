@@ -5,3 +5,9 @@
   copy:
     src: cmdline.txt
     dest: /boot/cmdline.txt
+  register: cmdline_txt
+
+- name: Reboot if cmdline.txt is changed
+  become: yes
+  reboot:
+  when: cmdline_txt is changed

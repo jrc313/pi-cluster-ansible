@@ -1,0 +1,8 @@
+---
+
+- name: Disable swap
+  become: yes
+  systemd:
+    name: dphys-swapfile.service
+    state: stopped
+    daemon_reload: yes

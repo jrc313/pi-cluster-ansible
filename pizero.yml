@@ -1,5 +1,5 @@
 ---
-- hosts: nodes
+- hosts: pizero
   roles:
     - common
   vars_files:
